@@ -7,41 +7,61 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class Server {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        final int PORT = 1250;
+
+        ServerSocket server = new ServerSocket(PORT);
+        boolean runServer = true;
+        int threadCounter = 0;
         ArrayList<ServerThread> threads = new ArrayList<>();
-        int n = 2;
-        for (int i = 0; i < 1; i++) {
-            threads.add(new ServerThread());
-            threads.get(i).start();
+        System.out.println("Server started");
+
+        while(runServer) {
+            System.out.println("Waiting for connection");
+            Socket serverClient = server.accept();
+            System.out.println("Client: " + threadCounter + " connected successfully!");
+            threads.add(new ServerThread(serverClient, threadCounter));
+            threadCounter++;
         }
+
+        server.close();
     }
 }
 
 class ServerThread extends Thread{
+    Socket serverClient;
+    int clientNo;
+
+    public ServerThread(Socket inSocket, int counter) {
+        this.serverClient = inSocket;
+        this.clientNo = counter;
+    }
 
     public void run() {
         final int PORT = 1250;
 
-        try (ServerSocket server = new ServerSocket(PORT)) {
-            System.out.println("waiting...");
-            Socket connection = server.accept();
+        System.out.println("waiting...");
 
-            //Open for communication with the client
-            InputStreamReader readConnection = new InputStreamReader(connection.getInputStream());
-            BufferedReader reader = new BufferedReader(readConnection);
-            PrintWriter printer = new PrintWriter(connection.getOutputStream(), true);
+        try {
+        
+        //Open for communication with the client
+        InputStreamReader readConnection = new InputStreamReader(serverClient.getInputStream());
+        BufferedReader reader = new BufferedReader(readConnection);
+        PrintWriter printer = new PrintWriter(serverClient.getOutputStream(), true);
 
-            runCalculatorLoop(reader, printer);
-            System.out.println("closing connection!");
+        printer.println("test");
 
-            //Close connection
-            reader.close();
-            printer.close();
-            connection.close();
-            server.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        runCalculatorLoop(reader, printer);
+        System.out.println("closing connection!");
+
+        //Close connection
+        reader.close();
+        printer.close();
+        serverClient.close();
+
+        } catch (Exception e) {
         }
+
     }
 
     private int calculateExpression(String inputString) {

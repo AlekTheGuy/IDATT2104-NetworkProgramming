@@ -23,6 +23,8 @@ public class Client {
         BufferedReader reader = new BufferedReader(readConnection);
         PrintWriter printer = new PrintWriter(connection.getOutputStream(), true);
 
+        System.out.println(reader.readLine());
+
         runCalculatorLoop(reader, printer, readFromCommandLine);
 
         //Close connections
