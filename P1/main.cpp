@@ -19,7 +19,7 @@ bool isPrime(int n) {
   return true;
 }
 
-//Uses isPrime to add all prime numbers between start and end to the vector.
+//Uses isPrime() to add all prime numbers between start and end to the vector.
 void getPrimesInRange(int start, int end, vector<int> *numberVector){
 
   for (size_t i = start; i < end; i++){
@@ -32,22 +32,28 @@ void getPrimesInRange(int start, int end, vector<int> *numberVector){
 
 int main() {
 
+  //Changeable variables
   int startNumber = 100;
   int endNumber = 200;
   int amountOfThreads = 3;
+
+  //Numbers per thread
   int splitPoint = (endNumber-startNumber)/amountOfThreads;
 
   vector<int> numberVector[amountOfThreads];
   vector<thread> threadVector;
   vector<int> primes;
 
+  //create all threads
   for (int i = 0; i < amountOfThreads; i++){
     threadVector.emplace_back(getPrimesInRange, startNumber+(splitPoint*i), startNumber + (splitPoint*(i+1)), &numberVector[i]);
   }
 
+  //Wait for threads to finish
   for (auto &thread : threadVector)
     thread.join();
 
+  //Combine all vectors into one
   for (int i = 0; i < amountOfThreads; i++){
     primes.insert(primes.end(), numberVector[i].begin(), numberVector[i].end());
   }
@@ -71,6 +77,5 @@ int main() {
 
   for(int i=0; i < primes.size(); i++)
   cout << primes.at(i) << ' ';
-
 
 }
