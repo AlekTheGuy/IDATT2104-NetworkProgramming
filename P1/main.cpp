@@ -4,6 +4,7 @@
 
 using namespace std;
 
+//Checks if a single number is prime.
 bool isPrime(int n) {
   if (n <= 1){
     return false;
@@ -18,6 +19,7 @@ bool isPrime(int n) {
   return true;
 }
 
+//Uses isPrime to add all prime numbers between start and end to the vector.
 void getPrimesInRange(int start, int end, vector<int> *numberVector){
 
   for (size_t i = start; i < end; i++){
@@ -30,22 +32,27 @@ void getPrimesInRange(int start, int end, vector<int> *numberVector){
 
 int main() {
 
-  int startNumber = 0;
-  int endNumber = 500000;
-  int amountOfThreads = 6;
+  int startNumber = 100;
+  int endNumber = 200;
+  int amountOfThreads = 3;
   int splitPoint = (endNumber-startNumber)/amountOfThreads;
 
   vector<int> numberVector[amountOfThreads];
   vector<thread> threadVector;
+  vector<int> primes;
 
   for (int i = 0; i < amountOfThreads; i++){
-    threadVector.emplace_back(getPrimesInRange, startNumber+(splitPoint*i), splitPoint + (splitPoint*i), &numberVector[i]);
+    threadVector.emplace_back(getPrimesInRange, startNumber+(splitPoint*i), startNumber + (splitPoint*(i+1)), &numberVector[i]);
   }
 
-for (auto &thread : threadVector)
+  for (auto &thread : threadVector)
     thread.join();
 
-/*
+  for (int i = 0; i < amountOfThreads; i++){
+    primes.insert(primes.end(), numberVector[i].begin(), numberVector[i].end());
+  }
+  
+  //All prints are under this comment.
   for(int i=0; i < numberVector[0].size(); i++)
   cout << numberVector[0].at(i) << ' ';
 
@@ -58,6 +65,12 @@ for (auto &thread : threadVector)
 
   for(int i=0; i < numberVector[2].size(); i++)
   cout << numberVector[2].at(i) << ' ';
-*/
+
+  cout << endl << "" << endl;
+  cout << endl << "combined primes" << endl;
+
+  for(int i=0; i < primes.size(); i++)
+  cout << primes.at(i) << ' ';
+
 
 }
