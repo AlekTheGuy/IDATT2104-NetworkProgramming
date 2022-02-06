@@ -23,23 +23,7 @@ public class Client {
         BufferedReader reader = new BufferedReader(readConnection);
         PrintWriter printer = new PrintWriter(connection.getOutputStream(), true);
 
-        //Reads input from server and prints to commandline.
-        String string1 = reader.readLine();
-        String string2 = reader.readLine();
-        System.out.println(string1 + "\n" + string2);
-
-        getServerMessages(reader);
-        System.out.println("Acquired all messages from server!");
-
         runCalculatorLoop(reader, printer, readFromCommandLine);
-
-        String inputline = readFromCommandLine.nextLine();
-        while (!inputline.equals("")) {
-            printer.println(inputline);
-            String response = reader.readLine();
-            System.out.println("Response: " + response);
-            inputline = readFromCommandLine.nextLine();
-        }
 
         //Close connections
         reader.close();
