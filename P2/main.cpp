@@ -2,8 +2,8 @@
 
 int main() {
 
-    using namespace std::this_thread; // sleep_for, sleep_until
-    using namespace std::chrono; // nanoseconds, system_clock, seconds
+    using namespace std::this_thread;
+    using namespace std::chrono;
 
     Workers workerThreads(2);
     Workers eventLoop(1);
@@ -51,8 +51,8 @@ int main() {
         });
     }
 */
+    //sleep_for(seconds(10));
 
-    sleep_for(seconds(10));
     workerThreads.stopWorkers();
 
     return 0;
