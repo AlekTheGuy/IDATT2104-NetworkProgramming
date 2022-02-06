@@ -23,10 +23,20 @@ public class Server {
         printer.println("Connected to server!");
         printer.println("Type: ");
 
+        printer.println("2");
+        printer.println("message 1");
+        printer.println("message 2");
+
+        runCalculatorLoop(reader, printer);
+
         //Get data from client
-        String inputLine = reader.readLine();
+        //String inputLine = reader.readLine();
         while (isRunning == true) {
+            System.out.println("Ready to read input!");
+            String inputLine = reader.readLine();
             while (inputLine != null) {
+
+                System.out.println("Input has been read!");
 
                 int sum = calculateExpression(inputLine); 
 
@@ -50,6 +60,8 @@ public class Server {
             }
         }
 
+        System.out.println("closing connection!");
+
         //Close connection
         reader.close();
         printer.close();
@@ -68,5 +80,21 @@ public class Server {
             return sum;
         } 
         return 0;
+    }
+
+    private static void runCalculatorLoop(BufferedReader reader, PrintWriter printer) throws IOException {
+        System.out.println("in calculator loop!");
+        boolean runLoop = true;
+        String inputLine;
+        while (runLoop == true){
+            System.out.println("Ready to read input!");
+            inputLine = reader.readLine();
+            if (inputLine != "exit") {
+                printer.println(calculateExpression(inputLine));
+            } else {
+                runLoop = false;
+                System.out.println("exiting loop!");
+            }
+        }
     }
 }

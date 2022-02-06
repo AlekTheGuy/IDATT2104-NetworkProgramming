@@ -28,6 +28,11 @@ public class Client {
         String string2 = reader.readLine();
         System.out.println(string1 + "\n" + string2);
 
+        getServerMessages(reader);
+        System.out.println("Acquired all messages from server!");
+
+        runCalculatorLoop(reader, printer, readFromCommandLine);
+
         String inputline = readFromCommandLine.nextLine();
         while (!inputline.equals("")) {
             printer.println(inputline);
@@ -41,5 +46,31 @@ public class Client {
         printer.close();
         connection.close();
         readFromCommandLine.close();
+    }
+
+    private static void getServerMessages(BufferedReader reader) throws NumberFormatException, IOException {
+        int messageAmount = Integer.parseInt(reader.readLine());
+        for (int i = 0; i < messageAmount; i++) {
+            System.out.println(reader.readLine());
+        }
+    }
+
+    private static void runCalculatorLoop(BufferedReader reader, PrintWriter printer, Scanner readFromCommandLine) throws IOException {
+        System.out.println("in calculator loop!");
+        boolean runLoop = true;
+        String inputLine;
+        while (runLoop == true) {
+            System.out.println("Ready to get input!");
+            inputLine = readFromCommandLine.nextLine();
+            if (inputLine != "exit") {
+                printer.println(inputLine);
+                System.out.println(reader.readLine());
+            } else {
+                printer.println(inputLine);
+                runLoop = false;
+                System.out.println("Exiting loop!");
+            }
+            
+        }
     }
 }
