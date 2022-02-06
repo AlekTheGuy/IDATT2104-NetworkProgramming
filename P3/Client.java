@@ -32,29 +32,20 @@ public class Client {
         readFromCommandLine.close();
     }
 
-    private static void getServerMessages(BufferedReader reader) throws NumberFormatException, IOException {
-        int messageAmount = Integer.parseInt(reader.readLine());
-        for (int i = 0; i < messageAmount; i++) {
-            System.out.println(reader.readLine());
-        }
-    }
-
     private static void runCalculatorLoop(BufferedReader reader, PrintWriter printer, Scanner readFromCommandLine) throws IOException {
         System.out.println("in calculator loop!");
         boolean runLoop = true;
         String inputLine;
         while (runLoop == true) {
-            System.out.println("Ready to get input!");
             inputLine = readFromCommandLine.nextLine();
-            if (inputLine != "exit") {
-                printer.println(inputLine);
-                System.out.println(reader.readLine());
-            } else {
+            if (inputLine.equals("exit")) {
                 printer.println(inputLine);
                 runLoop = false;
                 System.out.println("Exiting loop!");
+            } else {
+                printer.println(inputLine);
+                System.out.println(reader.readLine());
             }
-            
         }
     }
 }

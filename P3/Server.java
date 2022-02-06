@@ -4,21 +4,23 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
-public class Server extends Thread{
-    public static void main(String[] args) throws InterruptedException {
-        Server thread1 = new Server();
-
-        thread1.run();
-        System.out.println("Thread 1 running");
-
-        thread1.join();
-        System.out.println("Thread 1 finished");
+public class Server {
+    public static void main(String[] args) {
+        ArrayList<ServerThread> threads = new ArrayList<>();
+        int n = 2;
+        for (int i = 0; i < 1; i++) {
+            threads.add(new ServerThread());
+            threads.get(i).start();
+        }
     }
+}
+
+class ServerThread extends Thread{
 
     public void run() {
         final int PORT = 1250;
-        boolean isRunning = true;
 
         try (ServerSocket server = new ServerSocket(PORT)) {
             System.out.println("waiting...");
@@ -28,10 +30,6 @@ public class Server extends Thread{
             InputStreamReader readConnection = new InputStreamReader(connection.getInputStream());
             BufferedReader reader = new BufferedReader(readConnection);
             PrintWriter printer = new PrintWriter(connection.getOutputStream(), true);
-
-            //Sends messages to client.
-            printer.println("Connected to server!");
-            printer.println("Type: ");
 
             runCalculatorLoop(reader, printer);
             System.out.println("closing connection!");
@@ -66,7 +64,7 @@ public class Server extends Thread{
         while (runLoop == true){
             System.out.println("Ready to read input!");
             inputLine = reader.readLine();
-            if (inputLine == "exit") {
+            if (inputLine.equals("exit")) {
                 runLoop = false;
                 System.out.println("exiting loop!");
             } else {
@@ -75,3 +73,4 @@ public class Server extends Thread{
         }
     }
 }
+
