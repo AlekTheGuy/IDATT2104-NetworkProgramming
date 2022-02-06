@@ -23,8 +23,6 @@ public class Client {
         BufferedReader reader = new BufferedReader(readConnection);
         PrintWriter printer = new PrintWriter(connection.getOutputStream(), true);
 
-        System.out.println(reader.readLine());
-
         runCalculatorLoop(reader, printer, readFromCommandLine);
 
         //Close connections
@@ -35,7 +33,6 @@ public class Client {
     }
 
     private static void runCalculatorLoop(BufferedReader reader, PrintWriter printer, Scanner readFromCommandLine) throws IOException {
-        System.out.println("in calculator loop!");
         boolean runLoop = true;
         String inputLine;
         while (runLoop == true) {
@@ -43,7 +40,6 @@ public class Client {
             if (inputLine.equals("exit")) {
                 printer.println(inputLine);
                 runLoop = false;
-                System.out.println("Exiting loop!");
             } else {
                 printer.println(inputLine);
                 System.out.println(reader.readLine());
