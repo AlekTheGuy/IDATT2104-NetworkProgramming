@@ -22,7 +22,7 @@ public class UdpServer {
             // Step 3 : revieve the data in byte buffer.
             ds.receive(DpReceive);
 
-            System.out.println("Client:-" + data(receive));
+            int sum = calculateExpression(data(receive).toString());
 
             // Exit the server if the client sends "bye"
             if (data(receive).toString().equals("bye")) {
@@ -47,5 +47,18 @@ public class UdpServer {
             i++;
         }
         return ret;
+    }
+
+    private static int calculateExpression(String inputString) {
+        if (inputString.contains("+")) {
+            String[] arrOfString = inputString.split("[+]");
+            int sum = Integer.parseInt(arrOfString[0]) + Integer.parseInt(arrOfString[1]);
+            return sum;
+        } else if (inputString.contains("-")) {
+            String[] arrOfString = inputString.split("[-]");
+            int sum = Integer.parseInt(arrOfString[0]) - Integer.parseInt(arrOfString[1]);
+            return sum;
+        }
+        return 0;
     }
 }
