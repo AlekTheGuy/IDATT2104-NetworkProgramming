@@ -1,52 +1,42 @@
-
-// Java program to illustrate Server side
-// Implementation using DatagramSocket
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.SocketException;
 
-public class UdpServer {
-    public static void main(String[] args) throws IOException {
-        // Step 1 : Create a socket to listen at port 1234
+class UdpServer {
+
+    public static void main(String[] args)
+            throws IOException {
+
         DatagramSocket ds = new DatagramSocket(1234);
-        byte[] receive = new byte[65535];
+
+        byte[] buf = null;
 
         DatagramPacket DpReceive = null;
+        DatagramPacket DpSend = null;
+
         while (true) {
+            buf = new byte[65535];
 
-            // Step 2 : create a DatgramPacket to receive the data.
-            DpReceive = new DatagramPacket(receive, receive.length);
-
-            // Step 3 : revieve the data in byte buffer.
+            DpReceive = new DatagramPacket(buf, buf.length);
             ds.receive(DpReceive);
+            String inputString = new String(buf, 0, buf.length);
+            inputString = inputString.trim();
 
-            int sum = calculateExpression(data(receive).toString());
-
-            // Exit the server if the client sends "bye"
-            if (data(receive).toString().equals("bye")) {
-                System.out.println("Client sent bye.....EXITING");
+            if (inputString.equals("exit")) {
                 break;
             }
 
-            // Clear the buffer after every message.
-            receive = new byte[65535];
-        }
-    }
+            System.out.println("Equation Received:- " + inputString);
 
-    // A utility method to convert the byte array
-    // data into a string representation.
-    public static StringBuilder data(byte[] a) {
-        if (a == null)
-            return null;
-        StringBuilder ret = new StringBuilder();
-        int i = 0;
-        while (a[i] != 0) {
-            ret.append((char) a[i]);
-            i++;
+            int result = calculateExpression(inputString);
+            String res = Integer.toString(result);
+            buf = res.getBytes();
+            int port = DpReceive.getPort();
+
+            DpSend = new DatagramPacket(buf, buf.length, InetAddress.getLocalHost(), port);
+            ds.send(DpSend);
         }
-        return ret;
     }
 
     private static int calculateExpression(String inputString) {

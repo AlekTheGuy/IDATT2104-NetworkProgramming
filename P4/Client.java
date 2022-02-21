@@ -1,6 +1,3 @@
-
-// Java program to illustrate Client side
-// Implementation using DatagramSocket
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -8,46 +5,34 @@ import java.net.InetAddress;
 import java.util.Scanner;
 
 public class Client {
-    public static void main(String args[]) throws IOException {
+
+    public static void main(String args[])
+            throws IOException {
+
         Scanner sc = new Scanner(System.in);
-
-        // Step 1:Create the socket object for
-        // carrying the data.
         DatagramSocket ds = new DatagramSocket();
-
         InetAddress ip = InetAddress.getLocalHost();
         byte buf[] = null;
 
-        // loop while user not enters "bye"
         while (true) {
-            String inp = sc.nextLine();
 
-            // convert the String input into the byte array.
-            buf = inp.getBytes();
-
-            // Step 2 : Create the datagramPacket for sending
-            // the data.
+            String inputString = sc.nextLine();
+            buf = new byte[65535];
+            buf = inputString.getBytes();
             DatagramPacket DpSend = new DatagramPacket(buf, buf.length, ip, 1234);
 
-            // Step 3 : invoke the send call to actually send
-            // the data.
             ds.send(DpSend);
 
-            // break the loop if user enters "bye"
-            if (inp.equals("bye"))
+            if (inputString.equals("exit")) {
                 break;
-        }
-    }
+            }
 
-    public static StringBuilder data(byte[] a) {
-        if (a == null)
-            return null;
-        StringBuilder ret = new StringBuilder();
-        int i = 0;
-        while (a[i] != 0) {
-            ret.append((char) a[i]);
-            i++;
+            buf = new byte[65535];
+
+            DatagramPacket DpReceive = new DatagramPacket(buf, buf.length);
+            ds.receive(DpReceive);
+
+            System.out.println("Answer = " + new String(buf, 0, buf.length));
         }
-        return ret;
     }
 }
