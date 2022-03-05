@@ -17,7 +17,8 @@ public class DockerCompileController {
     @PostMapping("/compile")
     public String postCode(@RequestBody Code inputCode) throws IOException, InterruptedException {
         String result = dockerCompiler.compileCode(inputCode.getCode());
-        return result;
+        System.out.println(result);
+        return result.toString();
     }
     
 }
