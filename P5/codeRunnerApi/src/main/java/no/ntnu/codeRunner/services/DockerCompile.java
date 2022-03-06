@@ -16,25 +16,15 @@ public class DockerCompile {
     public String compileCode(String inputCode) throws IOException, InterruptedException {
         Path fileName = Path.of("tmp.txt");
         StringBuilder outputString = new StringBuilder();
-        StringBuilder completeInputString = new StringBuilder();
-        completeInputString.append("docker run --rm -ti gcc /bin/bash -c \"echo '");
-        completeInputString.append(inputCode);
-        completeInputString.append("' >> output.cpp && g++ output.cpp -o output && ./output\"");
-        inputCode = completeInputString.toString();
-
+        String completeInputString = "docker run --rm -i gcc /bin/bash -c \"echo '" + inputCode
+                + "' >> test.cpp && g++ test.cpp -o test && ./test\"";
         System.out.println(inputCode);
-
-        Files.writeString(fileName, inputCode);
-        Process p = Runtime.getRuntime().exec("bash tmp.txt");
-        //Process p = Runtime.getRuntime().exec(inputCode);
-        p.waitFor();
-        Scanner s = new Scanner(p.getInputStream());
+        Files.writeString(fileName, completeInputString);
+        Scanner s = new Scanner(Runtime.getRuntime().exec("bash tmp.txt").getInputStream());
         while (s.hasNextLine()) {
             outputString.append(s.nextLine() + "\n");
         }
         Files.delete(fileName);
-        System.out.println(outputString.toString());
         return outputString.toString();
     }
-
 }
