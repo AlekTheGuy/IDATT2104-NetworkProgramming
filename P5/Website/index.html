@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <title>Coderunner</title>
+    <script>
+      function postCode() {
+        let inputCode = document
+          .getElementById("codeBox")
+          .value.replace('"', '"\'"');
+
+        let data = {
+          code: document
+            .getElementById("codeBox")
+            .value.replaceAll('"', '"\'"'),
+        };
+
+        fetch("http://localhost:8080/compile", {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: { "Content-type": "application/json; charset=UTF-8" },
+        })
+          .then((response) => response.text())
+          .then(
+            (text) => (document.getElementById("outputBox").innerText = text)
+          );
+      }
+    </script>
+  </head>
+  <body>
+    <div>Insert code</div>
+    <textarea id="codeBox"></textarea>
+    <button onclick="postCode()">Compile and run</button>
+    <div>
+      terminal output:
+      <textarea id="outputBox"></textarea>
+    </div>
+  </body>
+</html>
