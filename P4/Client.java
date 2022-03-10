@@ -11,7 +11,7 @@ public class Client {
 
         Scanner sc = new Scanner(System.in);
         DatagramSocket ds = new DatagramSocket();
-        InetAddress ip = InetAddress.getLocalHost();
+        InetAddress ip = InetAddress.getByName("localhost");
         byte buf[] = null;
 
         while (true) {
