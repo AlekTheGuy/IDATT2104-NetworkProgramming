@@ -95,7 +95,7 @@ const wsServer = net.createServer((connection) => {
   };
 
   connection.on("end", () => {
-    console.log("Client disconnected");
+    console.log("Client disconnected!");
   });
 });
 wsServer.on("error", (error) => {
