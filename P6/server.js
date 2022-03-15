@@ -16,13 +16,12 @@ const httpServer = net.createServer((connection) => {
     const msg = () => {
       let v = document.getElementById("message").value
       ws.send(v);
-      document.getElementById("ok").innerHTML = document.getElementById("ok").innerHTML + "</br> Me: "+ v;
+      document.getElementById("ok").innerHTML = document.getElementById("ok").innerHTML + "</br>"+ v;
     }
     </script>
-    <h1>Websocket echo</h1>
-    <label for="lname">Message to server:</label>
+    <h1>Echo</h1>
     <input type="text" id="message" name="message"><br><br>
-    <input type="submit" value="Submit" onclick="return msg();">
+    <input type="submit" value="Send" onclick="return msg();">
     <div id="ok" class="div">
     </div>
   </body>
@@ -47,7 +46,7 @@ const wsServer = net.createServer((connection) => {
 
   connection.on("data", (data) => {
     if (data.toString()[0] == "G") {
-      //Uses magic to find key
+      //Finds key
       var key = data
         .toString()
         .substring(
