@@ -29,9 +29,9 @@ const httpServer = net.createServer((connection) => {
 `;
     connection.write(
       "HTTP/1.1 200 OK\r\nContent-Length: " +
-        content.length +
-        "\r\n\r\n" +
-        content
+      content.length +
+      "\r\n\r\n" +
+      content
     );
   });
 });
