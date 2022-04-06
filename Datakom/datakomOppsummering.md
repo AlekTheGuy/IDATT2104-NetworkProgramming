@@ -1,8 +1,8 @@
 # Oppsummering datakom
 
-## Uke 3 - Applikasjonslaget: Epost, web og navnetjenesten og HTTP
+# Uke 3 - Applikasjonslaget: Epost, web og navnetjenesten og HTTP
 
-### Webtjenesten
+## Webtjenesten
 
 Web tjenesten består av en klient som sender requests til web tjener og får respons tilbake med elementer som den skal vise. En nettside kan være bygget opp av elementer fra flere Web-tjenere.
 Nettleseren henter først index-filen og skanner etter referanser til flere objekter som lastes ned i rekkefølge.
@@ -70,4 +70,60 @@ HTTPS er en kryptert versjon av HTTP som bruker TLS "mellom" HTTP og TCP. Det er
 2. Utveksle TLS-info (klientdata og tjenersertfikat)
 3. Avtale sesjonsnøkler (for kryptering av meldinger)
 4. Nå kan man starte å sende krypterte meldinger via HTTP standarden.
+
+## DNS - Navnetjenesten
+
+DNS skal finne IP-adressen for et domenenavn. Nettverket trenger IP-adressen for å overføre data. DNS kan også brukes for kontroll, gjøre et reversoppslag for å passe på at IP-adressen har domenenavnet den utgir seg for å ha.
+
+Tjenesten er hierarkisk oppbygd, både i infrastruktur og forvaltning.
+
+infrastruktur: Rottjenere, lokale navnetjenere, ...
+
+forvaltning: Internasjonalt, regionalt, lokal registrering.
+
+### Oppbygging av en URL
+
+eks:
+
+https://www.reddit.com <- Komplett URL
+
+www.reddit.com <- Fully qualified domain name (FQDN)
+
+www <- Sub domain
+
+reddit <- second-level domain
+        
+com <- Top-level domain (TLD)
+
+Domenenavn brukes av flere tjeneser enn web.
+Generiske toppnivå-domener styres av ICANN.
+Nasjonale toppnivå-domener styres delegert, eks NORID for no-domenet. Brukerdomener (eks NTNU) tilhører registrert eier som selv kan legge til subdomener (IDI).
+
+![DNS-lookup](./bilder/DNS-lookup.png)
+
+Dette bildet viser hvordan DNS søker etter navn.
+Rot-tjeneren vet ikke detaljene om det du søker etter, men den vet hvem du skal spørre. Ved å gå gjennom disse rekursivt ender du til slutt opp med.
+
+## Epost
+
+Simple Mail Transfer Protocol (SMTP) er den originale protokollen brukt for mail, denne er veldig simpel og har noen mangler som senere ble adressert via Multipurpose Internet Mail Extensions (MIME).
+
+POP/IMAP er protokoller som blir brukt for å sende mail til klient, SMTP er en protokoll for å sende mail til tjener.
+
+MIME er bare en utvidelse av SMTP som koder om innholder i mailen for å støtte andre tegnsett, vedlegg, ...
+
+### MIME - Formatering av meldingsinnhold
+
+* SMTP bruker US-ASCII tegnsett, 7-bit og meget begrenset.
+* Filvedlegg og nasjonale tegnsett må kodes om.
+
+### SMTP dialog med MIME dataformatering
+
+![SMTP-med-MIME](./bilder/MIME.png)
+
+### Oppbygging av en epost
+
+![EpostStruktur](./bilder/EpostStruktur.png)
+
+Innholdet i den avsirklede seksjonen er MIME-seksjonen.
 
